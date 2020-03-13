@@ -1,7 +1,7 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
 * Студент: [Елена Ефимова](https://up.htmlacademy.ru/nodejs/3/user/199965).
-* Наставник: `Неизвестно`.
+* Наставник: `Юрий Кучма`.
 
 ---
 
