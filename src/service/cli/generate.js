@@ -1,6 +1,6 @@
 "use strict";
 
-const fs = require(`fs`);
+const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 const {getRandomInt, shuffle} = require(`../../utils`);
 
