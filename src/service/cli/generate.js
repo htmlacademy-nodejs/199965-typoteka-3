@@ -18,8 +18,10 @@ const getCurrentDateTime = () => {
   return `${date} ${time}`;
 };
 
-const generateOffers = (count, titles, categories, sentences) =>
-  Array(count)
+const generateOffers = (count, options) => {
+  const {titles, categories, sentences} = options;
+
+  return Array(count)
     .fill({})
     .map(() => ({
       category: shuffle(categories).slice(0, getRandomInt(1, categories.length - 1)),
@@ -30,11 +32,16 @@ const generateOffers = (count, titles, categories, sentences) =>
       title: titles[getRandomInt(1, titles.length - 1)],
       createdDate: getCurrentDateTime()
     }));
+};
 
 const readContent = async (filePath) => {
   try {
     const content = await fs.readFile(path.resolve(__dirname, filePath), `utf8`);
-    return content.split(`\n`);
+
+    return content.split(`\n`).filter((contentString) => {
+      contentString.trim();
+      return contentString.length > 0;
+    });
   } catch (err) {
     console.error(chalk.red(err));
     return [];
@@ -48,11 +55,16 @@ module.exports = {
     const sentences = await readContent(FILE_SENTENCES_PATH);
     const titles = await readContent(FILE_TITLES_PATH);
     const categories = await readContent(FILE_CATEGORIES_PATH);
+    const options = {
+      titles,
+      categories,
+      sentences,
+    };
 
 
     const [count] = args;
     const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
-    const content = JSON.stringify(generateOffers(countOffer, titles, categories, sentences));
+    const content = JSON.stringify(generateOffers(countOffer, options));
 
     try {
       await fs.writeFile(FILE_NAME, content);
